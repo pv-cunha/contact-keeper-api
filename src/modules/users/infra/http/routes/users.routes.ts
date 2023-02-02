@@ -1,10 +1,14 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 
+import ensureAuthenticate from '../middleware/ensureAuthenticate';
+
 import UsersController from '../controllers/UsersController';
+import AuthenticateController from '../controllers/AuthenticateController';
 
 const usersRouter = Router();
 const usersController = new UsersController();
+const authenticateController = new AuthenticateController();
 
 usersRouter.post(
   '/',
@@ -15,5 +19,7 @@ usersRouter.post(
   ],
   usersController.create,
 );
+
+usersRouter.post('/validate', ensureAuthenticate, authenticateController.show);
 
 export default usersRouter;

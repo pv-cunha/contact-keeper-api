@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 
 export interface IUser {
+  _id: mongoose.ObjectId;
   name: string;
   email: string;
   password: string;
-  date?: Date;
+  date: Date;
 }
 
 const UserSchema = new mongoose.Schema<IUser>({
