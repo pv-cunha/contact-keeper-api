@@ -1,4 +1,4 @@
-import IUserRepository from '../../../repositories/IUserRepository';
+import IUserRepository from '../../../repositories/IUsersRepository';
 import ICreateUserDTO from '../../../dto/ICreateUserDTO';
 
 import { User, IUser } from '../models/User';
