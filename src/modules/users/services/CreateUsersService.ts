@@ -1,6 +1,7 @@
 import IUserRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import { IUser } from '../infra/db/models/User';
+
+import IUserDTO from '../dto/IUserDTO';
 
 import AppError from '../../../shared/errors/AppError';
 
@@ -13,7 +14,7 @@ interface Request {
 class CreateUserService {
   constructor(private usersRepository: IUserRepository, private hashProvider: IHashProvider) {}
 
-  public async execute({ name, email, password }: Request): Promise<IUser> {
+  public async execute({ name, email, password }: Request): Promise<IUserDTO> {
     const checkUserExists = await this.usersRepository.findByEmail(email);
 
     if (checkUserExists) {
@@ -28,7 +29,12 @@ class CreateUserService {
       password: hashedPassword,
     });
 
-    return user;
+    const userDTO = {
+      name: user.name,
+      email: user.email,
+    };
+
+    return userDTO;
   }
 }
 
