@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 
-import { IUser } from '../infra/db/models/User';
+import IUserDTO from '../dto/IUserDTO';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
@@ -13,7 +13,7 @@ interface Request {
 }
 
 interface Response {
-  user: IUser;
+  user: IUserDTO;
   token: string;
 }
 
@@ -21,13 +21,13 @@ class AuthenticateUserService {
   constructor(private usersRepository: IUsersRepository, private hashProvider: IHashProvider) {}
 
   public async execute({ email, password }: Request): Promise<Response> {
-    const user = await this.usersRepository.findByEmail(email);
+    const userRepository = await this.usersRepository.findByEmail(email);
 
-    if (!user) {
+    if (!userRepository) {
       throw new AppError('Incorrect email/password combination !', 401);
     }
 
-    const passwordMatched = await this.hashProvider.compareHash(password, user.password);
+    const passwordMatched = await this.hashProvider.compareHash(password, userRepository.password);
 
     if (!passwordMatched) {
       throw new AppError('Incorrect email/password combination !', 401);
@@ -36,9 +36,14 @@ class AuthenticateUserService {
     const { secret, expiresIn } = authConfig.jwt;
 
     const token = sign({}, secret, {
-      subject: user._id.toString(),
+      subject: userRepository._id.toString(),
       expiresIn,
     });
+
+    const user = {
+      name: userRepository.name,
+      email: userRepository.email,
+    };
 
     return {
       user,
