@@ -1,5 +1,6 @@
 import IContactsRepository from '../../../repositories/IContactsRepository';
 import ICreateContactDTO from '../../../dto/ICreateContactDTO';
+import IUpdateContactDTO from '../../../dto/IUpdateContactDTO';
 
 import { IContact, Contact } from '../models/Contact';
 
@@ -18,6 +19,26 @@ class ContactsRepository implements IContactsRepository {
     });
 
     return contacts as IContact[];
+  }
+
+  public async findContactById(contact_id: string): Promise<IContact> {
+    const contact = await Contact.findOne({ contact_id });
+
+    return contact as IContact;
+  }
+
+  public async delete(contact_id: string): Promise<void> {
+    await Contact.deleteOne({ _id: contact_id });
+  }
+
+  public async update(contactToBeUptaded: IUpdateContactDTO): Promise<IContact> {
+    const updatedContact = await Contact.findByIdAndUpdate(
+      { _id: contactToBeUptaded.contact_id },
+      { $set: contactToBeUptaded },
+      { new: true },
+    );
+
+    return updatedContact as IContact;
   }
 }
 

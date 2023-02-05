@@ -23,6 +23,8 @@ class ListUserContactsService {
         email: contact.email,
         phone: contact.phone,
         type: contact.type,
+        user_id,
+        contact_id: contact._id.toString(),
       };
 
       return contactDTO;

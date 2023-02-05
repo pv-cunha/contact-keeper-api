@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { IUser } from '../../../../users/infra/db/models/User';
 
 export interface IContact {
+  _id: mongoose.ObjectId;
   user: IUser;
   name: string;
   email: string;
