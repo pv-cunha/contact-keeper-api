@@ -24,7 +24,7 @@ class UpdateContactService {
     }
 
     // Make sure user owns contact
-    if (contact.user.toString() !== user_id) {
+    if (contact.id !== user_id) {
       throw new AppError('This contact does not belong to the logged-in user. !');
     }
 
@@ -41,7 +41,7 @@ class UpdateContactService {
     const updatedContact = await this.contactsRepository.update(contactToBeUptaded);
 
     const contactDTO = {
-      contact_id: updatedContact?._id.toString(),
+      contact_id: updatedContact?.id,
       name: updatedContact?.name,
       email: updatedContact?.email,
       phone: updatedContact?.phone,

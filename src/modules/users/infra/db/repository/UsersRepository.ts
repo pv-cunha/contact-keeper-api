@@ -1,37 +1,56 @@
+import { prismaClient } from '../../../../../config/prismaClient';
+
 import IUserRepository from '../../../repositories/IUsersRepository';
 import ICreateUserDTO from '../../../dto/ICreateUserDTO';
 
-import { User, IUser } from '../models/User';
-
+import { User } from '../models/User';
 class UsersRepository implements IUserRepository {
-  public async create({ name, email, password }: ICreateUserDTO): Promise<IUser> {
-    const user = new User({
-      name,
-      email,
-      password,
+
+  public async create({ name, email, password }: ICreateUserDTO): Promise<User> {
+    const user = await prismaClient.user.create({
+      data: {
+        name,
+        email,
+        password
+      }
+    })
+
+    return user;
+  }
+
+  public async save(user: User): Promise<User> {
+    await prismaClient.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        name: user.name,
+        email: user.email,
+        password: user.password
+      }
     });
 
-    await user.save();
-
     return user;
   }
 
-  public async save(user: IUser): Promise<IUser> {
-    await new User(user).save();
+  public async findById(id: string): Promise<User> {
+    const user = await prismaClient.user.findUnique({
+      where: {
+        id
+      }
+    });
 
-    return user;
+    return user as User;
   }
 
-  public async findById(id: String): Promise<IUser> {
-    const user = await User.findById(id);
+  public async findByEmail(email: string): Promise<User> {
+    const user = await prismaClient.user.findUnique({
+      where: {
+        email
+      }
+    });
 
-    return user as IUser;
-  }
-
-  public async findByEmail(email: String): Promise<IUser> {
-    const user = await User.findOne({ email });
-
-    return user as IUser;
+    return user as User;
   }
 }
 

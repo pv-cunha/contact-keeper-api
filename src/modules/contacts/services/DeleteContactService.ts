@@ -18,7 +18,7 @@ class DeleteContactService {
     }
 
     // Make sure user owns contact
-    if (contact.user.toString() !== user_id) {
+    if (contact.id !== user_id) {
       throw new AppError('This contact does not belong to the logged-in user. !');
     }
 

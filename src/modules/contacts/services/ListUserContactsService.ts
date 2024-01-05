@@ -24,13 +24,13 @@ class ListUserContactsService {
         phone: contact.phone,
         type: contact.type,
         user_id,
-        contact_id: contact._id.toString(),
+        contact_id: contact.id,
       };
 
       return contactDTO;
     });
 
-    return contactsDTO;
+    return contactsDTO as unknown as IResponse;
   }
 }
 

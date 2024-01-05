@@ -3,17 +3,12 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import 'dotenv/config';
 
-import { connectDB } from '../../../config/db';
-
 import cors from 'cors';
 
 import routes from './routes';
 import AppError from '../../errors/AppError';
 
 const app = express();
-
-// Connect Database
-connectDB();
 
 app.use(cors());
 app.use(express.json());
