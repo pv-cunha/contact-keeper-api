@@ -24,7 +24,8 @@ describe('CreateUser', () => {
       password: '123456',
     });
 
-    expect(user).toHaveProperty('_id');
+    expect(user).toHaveProperty('email');
+    expect(user).toHaveProperty('name');
   });
 
   it('should not be able to create a new user with same email from another', async () => {

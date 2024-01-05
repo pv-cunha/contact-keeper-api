@@ -1,9 +1,11 @@
 import ICreateContactDTO from '../dto/ICreateContactDTO';
-import { IContact } from '../infra/db/models/Contact';
+import IUpdateContactDTO from '../dto/IUpdateContactDTO';
+import { Contact } from '../infra/db/models/Contact';
 
 export default interface IContactsRepository {
-  create: (data: ICreateContactDTO) => Promise<IContact>;
-  findAllContactsByUserId: (id: string) => Promise<IContact[]>;
-  // update: (id: string) => Promise<IContact | undefined>;
-  // delete: (id: string) => Promise<IContact | undefined>;
+  create: (data: ICreateContactDTO) => Promise<Contact>;
+  findAllContactsByUserId: (user_id: string) => Promise<Contact[]>;
+  findContactById: (contact_id: string) => Promise<Contact | undefined>;
+  update: (data: IUpdateContactDTO) => Promise<Contact | undefined>;
+  delete: (contact_id: string) => Promise<void>;
 }

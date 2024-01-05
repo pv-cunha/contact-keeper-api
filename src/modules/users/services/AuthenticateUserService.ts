@@ -21,13 +21,13 @@ class AuthenticateUserService {
   constructor(private usersRepository: IUsersRepository, private hashProvider: IHashProvider) {}
 
   public async execute({ email, password }: Request): Promise<Response> {
-    const userRepository = await this.usersRepository.findByEmail(email);
+    const userByEmail = await this.usersRepository.findByEmail(email);
 
-    if (!userRepository) {
+    if (!userByEmail) {
       throw new AppError('Incorrect email/password combination !', 401);
     }
 
-    const passwordMatched = await this.hashProvider.compareHash(password, userRepository.password);
+    const passwordMatched = await this.hashProvider.compareHash(password, userByEmail.password);
 
     if (!passwordMatched) {
       throw new AppError('Incorrect email/password combination !', 401);
@@ -36,13 +36,13 @@ class AuthenticateUserService {
     const { secret, expiresIn } = authConfig.jwt;
 
     const token = sign({}, secret, {
-      subject: userRepository._id.toString(),
+      subject: userByEmail.id,
       expiresIn,
     });
 
     const user = {
-      name: userRepository.name,
-      email: userRepository.email,
+      name: userByEmail.name,
+      email: userByEmail.email,
     };
 
     return {

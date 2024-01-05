@@ -1,6 +1,6 @@
 import IContactsRepository from '../repositories/IContactsRepository';
 
-import { IContact } from '../infra/db/models/Contact';
+import { Contact } from '../infra/db/models/Contact';
 
 interface Request {
   user_id: string;
@@ -13,7 +13,7 @@ interface Request {
 class CreateContactsService {
   constructor(private contactsRepository: IContactsRepository) {}
 
-  public async execute({ user_id, name, email, phone, type }: Request): Promise<IContact> {
+  public async execute({ user_id, name, email, phone, type }: Request): Promise<Contact> {
     const contact = await this.contactsRepository.create({ user_id, name, email, phone, type });
 
     return contact;

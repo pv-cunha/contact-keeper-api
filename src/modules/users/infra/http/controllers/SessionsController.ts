@@ -24,6 +24,6 @@ export default class SessionsController {
       password,
     });
 
-    return response.json({ user, token });
+    return response.status(200).json({ user, token });
   }
 }
