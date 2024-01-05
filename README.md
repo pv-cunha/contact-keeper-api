@@ -35,7 +35,7 @@ All contact endpoints are protected and each registered user has their own conta
 
 - Response: 200 (application/json)
 
-## Register a User [POST /users/validate]
+## Validate the JSON web token [POST /users/validate]
 
 - Request: Validate the JSON web token
 
